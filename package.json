@@ -1,0 +1,12 @@
+{
+  "name": "gaozhong-life-simulator",
+  "version": "1.0.0",
+  "description": "高中生活模拟器（AI 自动剧情）",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": ["simulator", "ai", "high-school"],
+  "license": "MIT"
+}
