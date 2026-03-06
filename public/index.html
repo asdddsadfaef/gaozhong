@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>高中生活模拟器 · AI剧情版</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app">
+      <header class="top">
+        <h1>🎓 高中生活模拟器</h1>
+        <p>AI 自动生成剧情，每一步都影响你的高中三年。</p>
+      </header>
+
+      <section class="panel stats-panel">
+        <h2>角色状态</h2>
+        <div id="stats" class="stats-grid"></div>
+        <div class="meta">
+          <span>回合：<strong id="turn">0</strong></span>
+          <span>剧情来源：<strong id="story-source">-</strong></span>
+        </div>
+      </section>
+
+      <section class="panel story-panel">
+        <h2>当前剧情</h2>
+        <article id="narration" class="narration">点击“开始游戏”进入你的高中生活。</article>
+        <ul id="events" class="events"></ul>
+      </section>
+
+      <section class="panel actions-panel">
+        <h2>你的选择</h2>
+        <div id="choices" class="choices"></div>
+        <div class="custom-action">
+          <input id="custom-action-input" type="text" placeholder="输入自定义行动，例如：主动请教老师错题" />
+          <button id="custom-action-btn" class="btn ghost">提交自定义行动</button>
+        </div>
+        <button id="start-btn" class="btn primary">开始游戏</button>
+      </section>
+
+      <section class="panel log-panel">
+        <h2>成长日志</h2>
+        <ol id="log" class="log"></ol>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
