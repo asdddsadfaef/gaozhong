@@ -56,9 +56,9 @@ cp .env.example .env
 ```
 
 - `PORT`: 后端端口
-- `OPENAI_BASE_URL`: DeepSeek（OpenAI兼容）接口根地址
+- `OPENAI_BASE_URL`: OpenAI兼容接口根地址
 - `OPENAI_API_KEY`: 可选，不填将使用本地回退叙事
-- `OPENAI_MODEL`: 模型名（默认 `deepseek-chat`）
+- `OPENAI_MODEL`: 模型名
 - `SAVE_PATH`: 存档目录
 
 ## 本地启动
