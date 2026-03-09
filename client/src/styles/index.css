@@ -143,3 +143,19 @@ button {
 .bottomNav a.active { color: #e35697; font-weight: 700; }
 
 summary { cursor: pointer; color: #a35e7d; }
+:root { font-family: "PingFang SC", "Microsoft YaHei", sans-serif; color: #2f3441; background: #f4f7ff; }
+body { margin: 0; }
+.shell { max-width: 1400px; margin: 0 auto; padding: 16px; }
+.topNav { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.topNav nav { display: flex; gap: 10px; flex-wrap: wrap; }
+.topNav a { color: #4f5d9d; text-decoration: none; padding: 6px 10px; border-radius: 8px; background: #e8ecff; }
+.layout { display: grid; grid-template-columns: 1fr 2fr 1fr; gap: 12px; }
+.topInfo { grid-column: 1 / -1; }
+.left,.right { min-height: 320px; }
+.center { min-height: 320px; }
+.bottom { grid-column: 1 / -1; }
+.card { background: white; border-radius: 12px; padding: 12px; box-shadow: 0 4px 18px rgba(74,88,152,0.08); }
+.actionGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 8px; }
+button { border: 0; background: #6d7ff6; color: #fff; border-radius: 8px; padding: 8px 10px; cursor: pointer; }
+.logBox { max-height: 180px; overflow: auto; background: #f7f8ff; padding: 8px; border-radius: 8px; }
+.relRow { display: grid; grid-template-columns: 120px repeat(4, 1fr); gap: 8px; margin-bottom: 8px; }
