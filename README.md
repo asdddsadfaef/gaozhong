@@ -1,80 +1,108 @@
-# 高中生活模拟器（AI 自动剧情）
+# 《AI高中生活模拟器》
 
-一个可直接运行的网页游戏模拟器，主题为“高中生活”。
+一个可运行、可扩展、可继续开发的高中生活模拟网页游戏原型。当前版本已升级为移动端沉浸式界面风格：剧情驱动主视图、底部导航、人脉卡片网络、可输入自定义行动。
 
-- 前端：原生 HTML/CSS/JS
-- 后端：Node.js 原生 HTTP 服务（零依赖）
-- 核心能力：每回合调用 AI 自动生成剧情与选项
-- 兜底机制：AI 不可用时自动切换本地剧情模板
+## 功能总览
 
-## 功能特性
+- 三学年时间系统（高一/高二/高三、上/下学期、每周7天、白天/傍晚/夜晚）
+- 玩家属性、资源、心理、家庭、学科成绩系统
+- 50+可执行行动（学习/社交/社团/生活/感情/特殊）
+- 12核心NPC + 20普通NPC，8维关系值与关系阶段可扩展
+- NPC回合自动行动模拟，玩家不在场时校园继续运转
+- 6社团（篮球社/文学社/音乐社/学生会/动漫社/辩论社）
+- 100+日常事件模板 + 12大型阶段事件 + 24剧情线节点
+- 考试系统（小测/月考/期中/期末/模拟考/高考框架）
+- 12结局原型
+- AI Narrative Service（OpenAI-compatible）+ 无Key本地回退叙事
+- 多存档槽位（JSON文件），并预留SQLite适配接口
+- 移动端沉浸式UI：手机容器布局、粉白校园视觉、剧情卡片与情境化选项
 
-1. 五维度角色成长系统：学业、心情、人际、零花、健康
-2. 每回合动态剧情：根据当前状态 + 历史行为生成新故事
-3. 三个剧情选项 + 自定义行动
-4. 自动记录成长日志
-5. 支持 OpenAI 兼容接口（可配置 base URL 与 model）
+## 技术栈
 
-## 运行方式
+- 前端：React + TypeScript + Vite + Zustand + React Router
+- 后端：Node.js + Express + TypeScript
+- 数据：本地JSON存档（`saves/`）+ SQLite接口预留
+- AI：OpenAI-compatible chat completion + Zod Schema校验 + fallback
+
+## 目录结构
+
+```text
+/client
+  /src/app
+  /src/pages
+  /src/components
+  /src/features
+  /src/services
+  /src/styles
+  /src/types
+/server
+  /src/routes
+  /src/engine
+  /src/services
+  /src/ai
+  /src/content
+  /src/persistence
+  /src/schemas
+  /src/types
+/content
+.env.example
+```
+
+## 环境变量
+
+复制 `.env.example` 到 `.env` 并按需填写：
 
 ```bash
-npm start
+cp .env.example .env
 ```
 
-打开：`http://localhost:3000`
+- `PORT`: 后端端口
+- `OPENAI_BASE_URL`: DeepSeek（OpenAI兼容）接口根地址
+- `OPENAI_API_KEY`: 可选，不填将使用本地回退叙事
+- `OPENAI_MODEL`: 模型名（默认 `deepseek-chat`）
+- `SAVE_PATH`: 存档目录
 
-## 环境变量（可选）
-
-复制 `.env.example` 为 `.env` 并填写：
+## 本地启动
 
 ```bash
-OPENAI_API_KEY=你的key
-OPENAI_MODEL=gpt-4o-mini
-OPENAI_BASE_URL=https://api.openai.com/v1
-PORT=3000
+npm install
+npm run dev
 ```
 
-> 若未配置 `OPENAI_API_KEY`，后端会自动使用本地剧情兜底。
+- 前端：<http://localhost:5173>
+- 后端：<http://localhost:3001>
 
-## API
+生产构建：
 
-### `POST /api/story`
-
-请求体：
-
-```json
-{
-  "state": {
-    "turn": 1,
-    "study": 66,
-    "mood": 58,
-    "social": 60,
-    "money": 49,
-    "health": 68
-  },
-  "actionText": "午休去图书馆刷题",
-  "history": []
-}
+```bash
+npm run build
+npm run start
 ```
 
-返回体（示例）：
+类型检查：
 
-```json
-{
-  "source": "ai",
-  "narration": "...",
-  "events": ["..."],
-  "choices": [
-    {
-      "text": "...",
-      "effect": {
-        "study": 5,
-        "mood": -2,
-        "social": 1,
-        "money": 0,
-        "health": -1
-      }
-    }
-  ]
-}
+```bash
+npm run check
 ```
+
+## AI模式 vs 回退模式
+
+- **AI模式**（配置`OPENAI_API_KEY`）
+  - 使用 Prompt Builder 注入世界状态、最近行动、人物信息、事件骨架
+  - 输出必须为结构化JSON，经过 Zod 校验
+- **回退模式**（未配置Key/超时/校验失败）
+  - 自动切换本地叙事模板生成器
+  - 依然输出同结构JSON，保证游戏可玩性
+
+## 规则与AI边界
+
+- 数值变动、事件合法性、考试计算全部由规则引擎控制
+- AI仅负责叙事文本、对白、可读化选项与摘要
+
+## 后续扩展建议
+
+1. 将`content`目录改为可编辑JSON并支持热加载。
+2. 引入SQLite/Prisma实现全量持久化。
+3. 增加关系网络图可视化（d3-force）。
+4. 增加多角色视角与班级生态仪表盘。
+5. 扩展高三冲刺与高考后志愿系统。

@@ -1,12 +1,15 @@
 {
-  "name": "gaozhong-life-simulator",
+  "name": "ai-highschool-life-simulator",
+  "private": true,
   "version": "1.0.0",
-  "description": "高中生活模拟器（AI 自动剧情）",
-  "main": "server.js",
+  "workspaces": ["client", "server"],
   "scripts": {
-    "start": "node server.js",
-    "dev": "node server.js"
+    "dev": "concurrently \"npm:dev -w server\" \"npm:dev -w client\"",
+    "build": "npm run build -w server && npm run build -w client",
+    "start": "npm run start -w server",
+    "check": "npm run check -w server && npm run check -w client"
   },
-  "keywords": ["simulator", "ai", "high-school"],
-  "license": "MIT"
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
 }
