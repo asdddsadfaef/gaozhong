@@ -1,59 +1,77 @@
 import { create } from 'zustand';
-import { api } from '../services/api';
-import { ActionDefinition, GameState, NarrativeScene } from '../types/game';
+import { createNewGame, runTurn } from '../engine/gameState';
+import { listSlots, loadAuto, loadSlot, saveAuto, saveSlot as saveSlotEngine } from '../engine/saveEngine';
+import { parseCustomAction } from '../engine/actionEngine';
+import { ApiConfig, GameState, WorldBook } from '../types/game';
 
-interface AppState {
-  game?: GameState;
-  scene?: NarrativeScene;
-  actions: ActionDefinition[];
-  clubs: any[];
-  saves: any[];
-  init: () => Promise<void>;
-  performAction: (actionId: string, targetNpcId?: string) => Promise<void>;
-  performCustomAction: (text: string) => Promise<void>;
-  refreshSaves: () => Promise<void>;
-  saveSlot: (slotId: string) => Promise<void>;
-  loadSlot: (slotId: string) => Promise<void>;
+interface AppStore {
+  game: GameState;
+  selectedNpcId?: string;
+  init: () => void;
+  chooseOption: (option: string) => void;
+  submitCustomAction: (text: string) => void;
+  selectNpc: (npcId?: string) => void;
+  manualSave: (slot: string) => void;
+  manualLoad: (slot: string) => void;
+  newGame: () => void;
+  updateWorldBook: (patch: Partial<WorldBook>) => void;
+  updateApiConfig: (patch: Partial<ApiConfig>) => void;
+  switchTheme: () => void;
+  slots: ReturnType<typeof listSlots>;
+  refreshSlots: () => void;
 }
 
-function findActionByText(text: string, actions: ActionDefinition[]): ActionDefinition | undefined {
-  const normalized = text.trim();
-  return actions.find((a) => normalized.includes(a.name.slice(0, 2)))
-    || actions.find((a) => normalized.includes(a.category.slice(0, 2)))
-    || actions[Math.floor(Math.random() * Math.max(actions.length, 1))];
-}
-
-export const useAppStore = create<AppState>((set, get) => ({
-  actions: [],
-  clubs: [],
-  saves: [],
-  init: async () => {
-    const [game, meta] = await Promise.all([api.getState(), api.getMeta()]);
-    set({ game, actions: meta.actions, clubs: meta.clubs });
+export const useAppStore = create<AppStore>((set, get) => ({
+  game: createNewGame(),
+  slots: listSlots(),
+  init: () => {
+    const saved = loadAuto();
+    if (saved) set({ game: saved });
+    set({ slots: listSlots() });
   },
-  performAction: async (actionId, targetNpcId) => {
-    const result = await api.doAction(actionId, targetNpcId);
-    set({ game: result.state, scene: result.scene });
+  chooseOption: (option) => {
+    const updated = runTurn(get().game, option);
+    saveAuto(updated);
+    set({ game: updated, slots: listSlots() });
   },
-  performCustomAction: async (text) => {
-    const action = findActionByText(text, get().actions);
-    if (!action) return;
-    const result = await api.doAction(action.id);
-    set({
-      game: result.state,
-      scene: {
-        ...result.scene,
-        optionalLogEntry: `你的自定义行动「${text}」被系统映射为「${action.name}」，并自然融入了本回合剧情。`
-      }
-    });
+  submitCustomAction: (text) => {
+    const parsed = parseCustomAction(text);
+    const updated = runTurn(get().game, parsed.normalized, parsed.hint);
+    saveAuto(updated);
+    set({ game: updated, slots: listSlots() });
   },
-  refreshSaves: async () => set({ saves: await api.listSaves() }),
-  saveSlot: async (slotId) => {
-    await api.save(slotId);
-    await get().refreshSaves();
+  selectNpc: (selectedNpcId) => set({ selectedNpcId }),
+  manualSave: (slot) => {
+    saveSlotEngine(get().game, slot);
+    set({ slots: listSlots() });
   },
-  loadSlot: async (slotId) => {
-    await api.load(slotId);
-    await get().init();
-  }
+  manualLoad: (slot) => {
+    const state = loadSlot(slot);
+    if (state) {
+      saveAuto(state);
+      set({ game: state, slots: listSlots() });
+    }
+  },
+  newGame: () => {
+    const state = createNewGame();
+    saveAuto(state);
+    set({ game: state, slots: listSlots(), selectedNpcId: undefined });
+  },
+  updateWorldBook: (patch) => {
+    const game = { ...get().game, worldBook: { ...get().game.worldBook, ...patch } };
+    saveAuto(game);
+    set({ game });
+  },
+  updateApiConfig: (patch) => {
+    const game = { ...get().game, apiConfig: { ...get().game.apiConfig, ...patch } };
+    saveAuto(game);
+    set({ game });
+  },
+  switchTheme: () => {
+    const nextTheme: '樱粉' | '薰衣草' = get().game.theme === '樱粉' ? '薰衣草' : '樱粉';
+    const game: GameState = { ...get().game, theme: nextTheme };
+    saveAuto(game);
+    set({ game });
+  },
+  refreshSlots: () => set({ slots: listSlots() })
 }));

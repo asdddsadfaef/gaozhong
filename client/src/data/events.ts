@@ -1,0 +1,53 @@
+import { GameEvent } from '../types/game';
+
+const E = (
+  id: string,
+  title: string,
+  type: GameEvent['type'],
+  scene: GameEvent['scene'],
+  track: GameEvent['track'],
+  effect: GameEvent['effect'],
+  seeds: string[],
+  actions: string[],
+  npcPool: string[] = []
+): GameEvent => ({ id, title, type, scene, track, effect, narrativeSeeds: seeds, actions, npcPool, trigger: {} });
+
+export const gameEvents: GameEvent[] = [
+  E('dorm-night-snack', '宿舍夜聊零食局', '日常事件', '宿舍', '班级融入线', { mood: 4, stress: -2, favor: 3 }, ['夜风敲着窗框，宿舍灯暖暖地罩在每个人脸上。', '拆开的薯片袋发出轻响，笑声比白炽灯还亮。'], ['接过零食继续聊天', '顺便问问英语测验', '把话题带到明天安排'], ['wanghao', 'linqing']),
+  E('dorm-mistake-book', '深夜错题复盘', '学业事件', '宿舍', '学业成长线', { efficiency: 3, stress: 1, exam: 2, favor: 1 }, ['你把错题本翻到折角最多的那页，呼吸慢慢稳下来。'], ['专注整理错题', '找室友核对思路', '先休息再继续'], ['linqing', 'hejing']),
+  E('dorm-lightsout', '熄灯前的心事', '成长事件', '宿舍', '自我成长线', { mood: 3, stress: -3, energy: 2 }, ['熄灯后，手机屏幕的一点光照在被角上，你突然想明白了一些事。'], ['写下今天的感受', '给朋友发一句晚安', '闭眼冥想五分钟'], ['chenya']),
+  E('class-pop-quiz', '临时小测突袭', '学业事件', '教室', '学业成长线', { exam: 4, stress: 2, math: 2, respect: 2 }, ['老师推门进来时手里夹着一沓卷子，教室瞬间安静。'], ['稳住心态先做会的题', '和同桌交换审题技巧', '下课立刻复盘'], ['zhoushu', 'gaoyuan']),
+  E('class-monitor-help', '班务协助', '人际事件', '教室', '班级融入线', { favor: 2, trust: 3, mood: 1, stress: -1 }, ['班长抱着资料有些手忙脚乱，你伸手接过一半。'], ['主动分发资料', '帮忙整理值日表', '和班长讨论活动'], ['liangfan']),
+  E('class-seat-chat', '课间同桌讨论', '日常事件', '教室', '学业成长线', { efficiency: 2, chinese: 1, english: 1, favor: 2 }, ['课间铃声刚落，同桌把草稿纸推到你面前，圈出一个关键步骤。'], ['请教一道题', '分享自己的解法', '约自习时间'], ['zhoushu']),
+  E('class-rival-glance', '成绩榜前的对视', '随机事件', '教室', '学业成长线', { stress: 1, mood: -1, exam: 2, respect: 3 }, ['你和高远同时停在成绩榜前，空气里像绷着一根线。'], ['礼貌打招呼', '默默记下差距', '约定下次比拼'], ['gaoyuan']),
+  E('cafeteria-encounter', '食堂偶遇', '日常事件', '食堂', '关系成长线', { mood: 3, energy: 2, favor: 2 }, ['汤碗升起的热气里，你听见熟悉的声音在叫你名字。'], ['一起拼桌吃饭', '帮对方带饮料', '聊周末安排'], ['chenya', 'songyi']),
+  E('cafeteria-gossip', '午间八卦风暴', '人际事件', '食堂', '班级融入线', { mood: 2, stress: -1, favor: 2, trust: 1 }, ['食堂角落里消息传播速度比打饭窗口还快。'], ['听听再判断', '转移到积极话题', '提醒大家别过线'], ['wanghao', 'hejing']),
+  E('cafeteria-solo', '一个人的慢午餐', '成长事件', '食堂', '自我成长线', { mood: 2, stress: -2, energy: 2 }, ['你端着餐盘坐在窗边，阳光把桌面照得很安静。'], ['慢慢吃完放空', '边吃边规划下午', '写下待办清单']),
+  E('field-run', '操场慢跑', '压力事件', '操场', '自我成长线', { energy: -1, mood: 4, stress: -4, health: 3 }, ['跑道边的风把闷在胸口的情绪一点点吹散。'], ['慢跑两圈', '和体育生并肩跑', '跑完做拉伸'], ['tangjie']),
+  E('field-sunset-talk', '看台日落谈心', '暧昧事件', '操场', '关系成长线', { favor: 4, intimacy: 3, mood: 3 }, ['夕阳把看台染成柔和的橘色，你们说话的声音也放轻了。'], ['认真听对方说', '分享自己的烦恼', '轻松开个玩笑'], ['songyi', 'chenya']),
+  E('field-teamwork', '班级接力训练', '成长事件', '操场', '班级融入线', { trust: 2, respect: 2, health: 2, stress: -1 }, ['接力棒在掌心传来温度，大家的脚步慢慢合拍。'], ['主动补位', '鼓励队友', '赛后总结配合问题'], ['tangjie', 'liangfan']),
+  E('library-focus', '图书馆沉浸学习', '学业事件', '图书馆', '学业成长线', { efficiency: 4, exam: 3, stress: -1, chinese: 1, math: 1, english: 1 }, ['翻页声和笔尖声交错成背景音，你很久没这么专注。'], ['限时刷题', '整理知识地图', '复述错因模型'], ['zhoushu']),
+  E('library-meet-senior', '学姐的建议', '成长事件', '图书馆', '自我成长线', { efficiency: 2, mood: 2, trust: 3, respect: 2 }, ['许森月把一张时间规划表递给你，语气温柔却坚定。'], ['请她点评计划', '记录她的建议', '约下次交流'], ['xusenyue']),
+  E('library-whisper', '书架间的低声交流', '暧昧事件', '图书馆', '关系成长线', { intimacy: 3, favor: 3, mood: 2 }, ['你们在书架窄道里同时伸手去拿同一本书，指尖差点碰到。'], ['轻声道歉并微笑', '顺势聊聊这本书', '借机约自习'], ['songyi', 'chenya']),
+  E('gate-supply', '校门口补给', '日常事件', '校门口', '班级融入线', { money: -15, mood: 2, efficiency: 1 }, ['文具店的灯亮得暖，货架上全是熟悉的学习装备。'], ['买新笔和便签', '补充饮料零食', '只逛不买控制开销']),
+  E('gate-rain', '突如其来的小雨', '随机事件', '校门口', '关系成长线', { mood: 2, favor: 3, trust: 2 }, ['雨点毫无预兆落下，有人把伞往你这边偏了偏。'], ['一起躲雨', '把外套借给对方', '跑回宿舍']),
+  E('gate-family-call', '来自家里的电话', '成长事件', '校门口', '自我成长线', { mood: 3, stress: -2, money: 20 }, ['电话那头传来熟悉的叮嘱，你忽然有了继续往前的底气。'], ['耐心聊近况', '报喜不报忧', '坦白最近压力']),
+  E('home-dinner', '家里晚餐时光', '日常事件', '家里', '自我成长线', { energy: 3, mood: 4, stress: -3, health: 2 }, ['热菜上桌的那一刻，你感觉整个星期都慢了下来。'], ['帮忙摆碗筷', '分享校园趣事', '饭后散步']),
+  E('home-week-plan', '周计划重整', '成长事件', '家里', '学业成长线', { efficiency: 3, stress: -1, exam: 1 }, ['你把便利贴按优先级排好，计划终于不再乱成一团。'], ['制定学习节奏', '复盘上周失误', '给自己留放松时间']),
+  E('home-old-friend', '老朋友语音', '人际事件', '家里', '关系成长线', { mood: 3, stress: -2, trust: 1 }, ['语音里对方笑着叫你外号，久违的轻松感涌上来。'], ['分享近况', '倾听对方烦恼', '约周末见面']),
+  E('dorm-exam-anxiety', '考前焦虑夜', '压力事件', '宿舍', '学业成长线', { stress: 4, mood: -2, efficiency: 1, favor: 2 }, ['你盯着公式发呆，直到室友敲了敲你的桌面。'], ['向室友求助', '先做呼吸调整', '硬着头皮继续刷题'], ['linqing', 'wanghao']),
+  E('class-teacher-praise', '老师点名表扬', '成长事件', '教室', '学业成长线', { mood: 4, respect: 3, favor: 1, exam: 2 }, ['老师在讲台上念到你的名字时，后排传来低低的惊叹。'], ['谦虚回应', '课后请教进阶内容', '鼓励同学一起进步'], ['liangfan']),
+  E('cafeteria-budget', '月底预算紧张', '压力事件', '食堂', '自我成长线', { money: -8, stress: 1, mood: -1, efficiency: 1 }, ['你看着余额提醒，默默把加餐划掉。'], ['选择性价比套餐', '向朋友借一点', '记账并调整开销'], ['wanghao']),
+  E('field-confession-hint', '若有若无的暗示', '暧昧事件', '操场', '关系成长线', { intimacy: 4, favor: 4, mood: 3, stress: -1 }, ['对方说到一半停住了，看向你的眼神比晚风更轻。'], ['装作没听懂', '试探回应', '把话题留到以后'], ['chenya', 'songyi']),
+  E('library-competition', '竞赛资料争夺', '学业事件', '图书馆', '学业成长线', { math: 2, english: 1, respect: 3, stress: 1 }, ['最后一本竞赛资料落在你和高远之间。'], ['礼让后借阅复印', '直接讨论内容', '各自沉默学习'], ['gaoyuan']),
+  E('gate-parttime-flyer', '兼职传单诱惑', '随机事件', '校门口', '自我成长线', { money: 25, energy: -2, stress: 1 }, ['校门外有人递来兼职传单，报酬写得很诱人。'], ['接短时兼职', '拒绝并回校', '先咨询学姐意见'], ['xusenyue']),
+  E('class-group-project', '小组任务分工', '人际事件', '教室', '班级融入线', { trust: 3, favor: 2, efficiency: 2 }, ['分组名单贴出来后，大家都在找最顺手的搭档。'], ['主动认领困难部分', '协调每个人时间', '承担汇总工作'], ['liangfan', 'hejing']),
+  E('dorm-gift-choice', '礼物该送给谁', '暧昧事件', '宿舍', '关系成长线', { intimacy: 2, mood: 2, favor: 3, money: -10 }, ['你盯着抽屉里的小礼物，迟迟没决定收件人。'], ['送给青梅竹马', '送给并肩学习的人', '先收起来观察'], ['chenya', 'zhoushu']),
+  E('home-self-doubt', '深夜自我怀疑', '压力事件', '家里', '自我成长线', { mood: -2, stress: 3 }, ['安静的房间里，焦虑突然放大到盖过一切声音。'], ['写下担忧逐条拆解', '找人倾诉', '早点休息明天再说']),
+  E('cafeteria-kindness', '一份多买的甜点', '人际事件', '食堂', '关系成长线', { favor: 3, intimacy: 2, mood: 3, money: -6 }, ['你把多买的甜点推过去，对方先愣了一下然后笑开。'], ['轻松带过心意', '趁机聊近况', '约下次一起吃饭'], ['songyi', 'linqing']),
+  E('field-class-cleanup', '运动会后清理', '成长事件', '操场', '班级融入线', { trust: 2, respect: 2, energy: -1, mood: 2 }, ['喧闹散去后，你们一起把看台恢复整洁。'], ['主动多做一点', '和同学分工协作', '边收拾边聊天'], ['tangjie', 'liangfan']),
+  E('library-language-breakthrough', '英语阅读突破', '学业事件', '图书馆', '学业成长线', { english: 3, exam: 2, mood: 2, stress: -1 }, ['你忽然看懂了之前总卡住的长难句，心里一阵发亮。'], ['立刻总结技巧', '教给同桌巩固', '再做一篇验证'], ['zhoushu']),
+  E('class-morning-check', '早读状态检查', '日常事件', '教室', '学业成长线', { efficiency: 2, mood: 1, stress: -1 }, ['晨光斜照进教室，翻书声像一条平稳的河。'], ['大声朗读提神', '默读并标记重点', '和后桌互抽背'], ['hejing']),
+  E('gate-lost-wallet', '意外捡到钱包', '随机事件', '校门口', '班级融入线', { respect: 3, trust: 3, mood: 1 }, ['你在路边捡到一个钱包，里面夹着学生证。'], ['立刻交到门卫', '联系失主本人', '拍照记录防误会']),
+  E('dorm-final-whisper', '熄灯后的悄悄话', '暧昧事件', '宿舍', '关系成长线', { intimacy: 3, trust: 2, mood: 2 }, ['黑暗里有人压低声音叫你，语气里全是试探。'], ['认真回应', '含糊带过', '约明天再聊'], ['chenya', 'songyi'])
+];
