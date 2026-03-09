@@ -120,6 +120,7 @@ export interface WorldBook {
 }
 
 export interface ApiConfig {
+  deepseepApi: string;
   provider: string;
   model: string;
   apiKey: string;
