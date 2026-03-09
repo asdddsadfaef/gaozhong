@@ -14,6 +14,7 @@ export async function generateNarrative(state: WorldState, skeleton: string, act
   const timer = setTimeout(() => controller.abort(), timeoutMs);
 
   try {
+    const resp = await fetch(`${process.env.OPENAI_BASE_URL || 'https://api.deepseek.com/v1'}/chat/completions`, {
     const resp = await fetch(`${process.env.OPENAI_BASE_URL || 'https://api.openai.com/v1'}/chat/completions`, {
       method: 'POST',
       signal: controller.signal,
@@ -22,6 +23,7 @@ export async function generateNarrative(state: WorldState, skeleton: string, act
         Authorization: `Bearer ${apiKey}`
       },
       body: JSON.stringify({
+        model: process.env.OPENAI_MODEL || 'deepseek-chat',
         model: process.env.OPENAI_MODEL || 'gpt-4o-mini',
         response_format: { type: 'json_object' },
         messages: [

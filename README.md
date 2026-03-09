@@ -1,6 +1,6 @@
 # 《AI高中生活模拟器》
 
-一个可运行、可扩展、可继续开发的高中生活模拟网页游戏原型。项目包含规则引擎 + AI叙事 + NPC社会模拟 + 多系统联动。
+一个可运行、可扩展、可继续开发的高中生活模拟网页游戏原型。当前版本已升级为移动端沉浸式界面风格：剧情驱动主视图、底部导航、人脉卡片网络、可输入自定义行动。
 
 ## 功能总览
 
@@ -15,6 +15,7 @@
 - 12结局原型
 - AI Narrative Service（OpenAI-compatible）+ 无Key本地回退叙事
 - 多存档槽位（JSON文件），并预留SQLite适配接口
+- 移动端沉浸式UI：手机容器布局、粉白校园视觉、剧情卡片与情境化选项
 
 ## 技术栈
 
@@ -56,9 +57,9 @@ cp .env.example .env
 ```
 
 - `PORT`: 后端端口
-- `OPENAI_BASE_URL`: OpenAI兼容接口根地址
+- `OPENAI_BASE_URL`: DeepSeek（OpenAI兼容）接口根地址
 - `OPENAI_API_KEY`: 可选，不填将使用本地回退叙事
-- `OPENAI_MODEL`: 模型名
+- `OPENAI_MODEL`: 模型名（默认 `deepseek-chat`）
 - `SAVE_PATH`: 存档目录
 
 ## 本地启动
