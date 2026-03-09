@@ -15,6 +15,10 @@ export const SettingsPage = () => {
       <div className="card">
         <h3>API / 模型设置</h3>
         <input value={game.apiConfig.deepseepApi} onChange={(e) => updateApiConfig({ deepseepApi: e.target.value })} placeholder="Deepseep 接口" />
+        <input value={game.apiConfig.provider} onChange={(e) => updateApiConfig({ provider: e.target.value })} placeholder="Provider" />
+        <input value={game.apiConfig.model} onChange={(e) => updateApiConfig({ model: e.target.value })} placeholder="Model" />
+        <input value={game.apiConfig.endpoint} onChange={(e) => updateApiConfig({ endpoint: e.target.value })} placeholder="Endpoint" />
+        <input value={game.apiConfig.apiKey} onChange={(e) => updateApiConfig({ apiKey: e.target.value })} placeholder="API Key" />
       </div>
 
       <div className="card">

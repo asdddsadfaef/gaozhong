@@ -21,6 +21,10 @@ export const defaultWorldBook: WorldBook = {
 
 export const defaultApiConfig: ApiConfig = {
   deepseepApi: ''
+  provider: 'Local Mock',
+  model: 'Narrative-Lite-v1',
+  apiKey: '',
+  endpoint: ''
 };
 
 export const relationStages = [
